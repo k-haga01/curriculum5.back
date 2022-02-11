@@ -17,6 +17,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => 'admin'], function() {
-    Route::get('news/create', 'App\Http\Controllers\Admin\NewsController@add');
+Route::group(['prefix' => 'admin','middleware' => 'auth'], function() {
+    Route::get('news/create', 'App\Http\Controllers\Admin\NewsController@add')->middleware('auth');
+    Route::post('news/create','App\Http\Controllers\Admin\NewsController@create'); # 追記
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
